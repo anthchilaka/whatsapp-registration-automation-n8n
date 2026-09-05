@@ -1,5 +1,7 @@
 # Security Policy
 
+See `README.md` for the project overview.
+
 ## Practices
 
 - **No credentials live in this repository.** Every API key, access token, and database password is stored only in the workflow engine's own encrypted credential store. Anything resembling a secret in this repo is a placeholder (`.example`) value, never a real one.

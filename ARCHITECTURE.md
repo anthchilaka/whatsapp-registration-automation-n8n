@@ -1,5 +1,7 @@
 # Architecture
 
+See `README.md` for the project overview.
+
 **Build status:** the full conversation flow described below is built and has passed structural validation and internal review. It has **not yet been exercised by a real end-to-end WhatsApp conversation with a live member.** Treat every step as "built, pending live verification" rather than "proven in production."
 
 ## Overview

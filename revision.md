@@ -1,5 +1,7 @@
 # Revision Log: Legion of Mary WhatsApp Registration Bot
 
+See `README.md` for the project overview and `ARCHITECTURE.md` for how the system is built.
+
 How an existing n8n build (three draft versions, `ver1`/`ver2`/`ver3`, migrated from an earlier n8n Cloud subscription) was reviewed, debugged, and re-architected by Claude Code into a working WhatsApp registration bot for a real ministry use case.
 
 **Context.** All three drafts share the same core design: a single AI agent (GPT-4.1-mini via LangChain) driving a 10-step conversation in four languages (English, Igbo, Yoruba, Hausa), collecting a Legion of Mary member's title, name, office, birth date, and photo, then writing the record to Airtable. `ver2` (14 nodes) was the most complete of the three and became the focus of this work. `ver1` and `ver3` (11 nodes each) are referenced throughout as a baseline showing what the original build looked like before revision, and in one case, as the source of a fix.

@@ -1,5 +1,7 @@
 # Privacy Policy
 
+See `README.md` for the project overview.
+
 **Effective date:** September 5, 2026
 
 This policy covers the WhatsApp member-registration assistant built for Legion of Mary's CIC Comitium ("the bot," "we," "us"), operated by **Anthony Chilaka (anthonychilaka.com)**, available on WhatsApp.
