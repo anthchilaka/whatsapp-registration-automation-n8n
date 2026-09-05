@@ -2,15 +2,15 @@
 
 ## Executive Summary
 
-Legion of Mary's CIC Comitium registers members by hand — paper forms and ad hoc messages, no structured record, no consistent process across the languages members actually speak (English, Igbo, Yoruba, Hausa). This project replaces that with a WhatsApp-native bot: members register entirely inside a chat they already use, in their own language, ending with a verified record (including a photo) written straight to a shared database. **Status: built and internally tested; not yet piloted with real members** — see Next Steps.
+Legion of Mary's CIC Comitium registers members by hand: paper forms and ad hoc messages, no structured record, no consistent process across the languages members actually speak (English, Igbo, Yoruba, Hausa). This project replaces that with a WhatsApp-native bot: members register entirely inside a chat they already use, in their own language, ending with a verified record (including a photo) written straight to a shared database. **Status: built and internally tested; not yet piloted with real members.** See Next Steps.
 
 ## Business Problem
 
-A volunteer-run ministry organization needs member records — name, office held, date of birth, a photo — kept consistently enough to support real operations (birthday recognition, contact lists, office rosters) without asking anyone to learn a new tool or fill out a form on a computer they may not have. WhatsApp is the one channel every member already has.
+A volunteer-run ministry organization needs member records (name, office held, date of birth, a photo) kept consistently enough to support real operations (birthday recognition, contact lists, office rosters) without asking anyone to learn a new tool or fill out a form on a computer they may not have. WhatsApp is the one channel every member already has.
 
 ## Methodology
 
-Built a WhatsApp-native conversation as an n8n workflow, backed by a Postgres state machine — not an LLM's own memory — so the same input reliably produces the same result. Each answer is validated by explicit rules first; only a genuinely ambiguous reply escalates to a single shared LLM classification step, kept narrow and auditable. Registration ends with an in-chat photo upload, verified against the exact inbound message, written to Airtable.
+Built a WhatsApp-native conversation as an n8n workflow, backed by a Postgres state machine, not an LLM's own memory, so the same input reliably produces the same result. Each answer is validated by explicit rules first; only a genuinely ambiguous reply escalates to a single shared LLM classification step, kept narrow and auditable. Registration ends with an in-chat photo upload, verified against the exact inbound message, written to Airtable.
 
 ## Skills Demonstrated
 
@@ -24,7 +24,7 @@ Built a WhatsApp-native conversation as an n8n workflow, backed by a Postgres st
 Replacing an LLM-driven "recount the whole conversation every turn" design with a deterministic one eliminated a specific, previously-reported failure mode: the registration summary intermittently failing to reflect what was actually said. Recommendations before wider rollout:
 1. Run a small real pilot with a handful of CIC Comitium members before opening it up fully.
 2. Decide deliberately on Meta Business Verification (raises the daily-conversation cap; not required to function at small scale).
-3. Treat the verified in-chat photo as the seed for the two features it was specifically designed to support next (see below) — don't let it sit unused once registrations start.
+3. Treat the verified in-chat photo as the seed for the two features it was specifically designed to support next (see below). Don't let it sit unused once registrations start.
 
 ## Next Steps
 

@@ -112,7 +112,7 @@ Each entry below follows the same structure: **Before** (what the workflow did),
 
 **Issue Found:** Researched against Meta's own WhatsApp Cloud API documentation for a better-supported approach. Confirmed: users can simply send a photo as a normal WhatsApp attachment. The incoming webhook then carries a `media_id`, downloadable via a documented two-step API call using the same access token already in use. n8n's own WhatsApp node (the exact node type already used everywhere else in this workflow) has a built-in Media resource with Download/Upload/Delete operations, so this needs no custom workaround.
 
-**Fix Applied:** Photo capture moved to native in-chat upload. The user is asked to send their photo directly in the chat; the incoming webhook's message type confirms it's really an image, and the message's media ID (not the file itself) is stored immediately — the actual download is deferred to the moment registration is confirmed, since a WhatsApp media ID stays valid for 7 days, comfortably longer than a normal confirmation delay. At confirmation, the photo is re-fetched via the same two-step WhatsApp Media API call, then attached to the Airtable record through Airtable's own separate upload endpoint — discovered via Airtable's own API documentation during this phase: an attachment field can't be set in the same call that creates a record, and doesn't accept a raw binary upload through the normal field-mapping form. It needs its own follow-up call, sent as base64, to a record that already exists. This is a genuine revision to the plan above, made only after checking Airtable's real documented behaviour rather than assuming it.
+**Fix Applied:** Photo capture moved to native in-chat upload. The user is asked to send their photo directly in the chat; the incoming webhook's message type confirms it's really an image, and the message's media ID (not the file itself) is stored immediately; the actual download is deferred to the moment registration is confirmed, since a WhatsApp media ID stays valid for 7 days, comfortably longer than a normal confirmation delay. At confirmation, the photo is re-fetched via the same two-step WhatsApp Media API call, then attached to the Airtable record through Airtable's own separate upload endpoint, discovered via Airtable's own API documentation during this phase: an attachment field can't be set in the same call that creates a record, and doesn't accept a raw binary upload through the normal field-mapping form. It needs its own follow-up call, sent as base64, to a record that already exists. This is a genuine revision to the plan above, made only after checking Airtable's real documented behaviour rather than assuming it.
 
 **Why It Matters:** No external website, no leaving WhatsApp mid-registration. It also serves this project's own stated next phase directly: an automated birthday shoutout using the member's photo, later a calendar reminder. A photo verified as belonging to this exact registration is a materially more trustworthy source for that feature than one merely guessed to exist at a predictable filename.
 
@@ -122,11 +122,11 @@ Each entry below follows the same structure: **Before** (what the workflow did),
 
 **Before:** Revision 6's redesign, and every field-collection step built after it, depended on a table, `legio_registration_progress`, that prior notes described as already created via a direct database session.
 
-**Issue Found:** Resuming this work, the table was checked directly against the live database rather than trusted from notes — it didn't exist, on that database or any other on the same host. Every node built against it had validated cleanly the whole time, because n8n's own workflow validator checks node configuration, not whether a table it queries is real; nothing had caught this because there had been no real end-to-end test yet.
+**Issue Found:** Resuming this work, the table was checked directly against the live database rather than trusted from notes: it didn't exist, on that database or any other on the same host. Every node built against it had validated cleanly the whole time, because n8n's own workflow validator checks node configuration, not whether a table it queries is real; nothing had caught this because there had been no real end-to-end test yet.
 
 **Fix Applied:** Table created for real, matching every column the existing nodes already expected, plus the additional columns this phase needed.
 
-**Why It Matters:** Without this, none of Revision 6 through 9's design — however correct on paper — had ever actually run. A workflow validating clean is not the same as its dependencies being real.
+**Why It Matters:** Without this, none of Revision 6 through 9's design, however correct on paper, had ever actually run. A workflow validating clean is not the same as its dependencies being real.
 
 ---
 
@@ -136,7 +136,7 @@ Each entry below follows the same structure: **Before** (what the workflow did),
 
 **Issue Found:** The Airtable node's field mappings and the success message's text both still pointed at the old agent-output-parsing step, which no longer runs anything relevant to this path.
 
-**Fix Applied:** A new mapping step reads the Postgres row's underlying column names and produces the shape the Airtable node was already built to expect, plus a freshly built confirmation summary string — both fed from real, committed data rather than an LLM's own reconstruction.
+**Fix Applied:** A new mapping step reads the Postgres row's underlying column names and produces the shape the Airtable node was already built to expect, plus a freshly built confirmation summary string, both fed from real, committed data rather than an LLM's own reconstruction.
 
 **Why It Matters:** This is the actual finish line of the registration flow. Everything built in Revisions 6 through 10 only matters if a completed registration can still reach Airtable and tell the user it succeeded.
 
@@ -144,9 +144,9 @@ Each entry below follows the same structure: **Before** (what the workflow did),
 
 ## 12. The "NO, let me change something" path had never been solved, in either version
 
-**Before:** Flagged as an open gap in Revision 9's notes — the original agent-driven design only asked "what would you like to change" and hoped further conversation handled it. No version of this bot had ever actually routed a correction anywhere.
+**Before:** Flagged as an open gap in Revision 9's notes: the original agent-driven design only asked "what would you like to change" and hoped further conversation handled it. No version of this bot had ever actually routed a correction anywhere.
 
-**Issue Found:** Solving this deterministically meant reusing the field-collection logic already built, not duplicating it — the same question that fires on a fresh registration also needed to fire mid-correction, then return to the confirmation summary afterward instead of continuing forward through the rest of the questions.
+**Issue Found:** Solving this deterministically meant reusing the field-collection logic already built, not duplicating it: the same question that fires on a fresh registration also needed to fire mid-correction, then return to the confirmation summary afterward instead of continuing forward through the rest of the questions.
 
 **Fix Applied:** A "return here when done" marker was added, checked at the moment any field's answer is saved: normally it's empty and the flow just advances to the next question as before; during a correction it's set, gets read first, and sends the person straight back to the confirmation summary once the one field they meant to fix is updated. A new step reads what the user names (office, name, photo, etc.) and jumps them to that question using this same mechanism.
 
@@ -158,7 +158,7 @@ Each entry below follows the same structure: **Before** (what the workflow did),
 
 **Before:** Reusing this node for the newly-deterministic completion path required first checking its actual configuration, not assuming Revision 4's fix still held.
 
-**Issue Found:** It still had the developer's personal number hardcoded as the recipient — the same class of bug fixed everywhere else in Revision 4 — and a malformed expression prefix that would have sent the literal, unrendered text rather than the intended message.
+**Issue Found:** It still had the developer's personal number hardcoded as the recipient (the same class of bug fixed everywhere else in Revision 4) and a malformed expression prefix that would have sent the literal, unrendered text rather than the intended message.
 
 **Fix Applied:** Recipient made dynamic, matching every other send node; expression prefix corrected.
 
@@ -170,11 +170,11 @@ Each entry below follows the same structure: **Before** (what the workflow did),
 
 **Before:** The agent, its language model and memory, its output-parsing step, and the old confirmation branch (Revision 3's fix, itself superseded by Revision 9) remained in the workflow, reachable only as a fallback for a registration state nothing produces anymore.
 
-**Issue Found:** None of the real registration states — title through the new correction step — ever route to this branch once the deterministic design covers all of them. It was dead weight, not a safety net.
+**Issue Found:** None of the real registration states (title through the new correction step) ever route to this branch once the deterministic design covers all of them. It was dead weight, not a safety net.
 
 **Fix Applied:** All ten nodes removed.
 
-**Why It Matters:** This is the actual completion of Revision 6's stated goal — not just adding a deterministic path alongside the agent, but retiring the agent-driven design entirely.
+**Why It Matters:** This is the actual completion of Revision 6's stated goal: not just adding a deterministic path alongside the agent, but retiring the agent-driven design entirely.
 
 ---
 

@@ -18,7 +18,7 @@ We don't ask for or collect anything beyond what's needed to complete your regis
 
 **How we use it**
 
-We use this to register you as a member: to confirm your details back to you, to save your record, and — going forward — to recognize your birthday and keep in touch about Comitium activities. Nothing you tell the bot is used for anything beyond your registration and the Comitium's own membership records.
+We use this to register you as a member: to confirm your details back to you, to save your record, and, going forward, to recognize your birthday and keep in touch about Comitium activities. Nothing you tell the bot is used for anything beyond your registration and the Comitium's own membership records.
 
 **How long we keep it**
 
