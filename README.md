@@ -33,6 +33,10 @@ Replacing an LLM-driven "recount the whole conversation every turn" design with 
 - A calendar reminder 2 days ahead of each member's birthday.
 - Migrate off the shared demo tenant into a dedicated tenant once CIC Comitium has seen and approved it, per this project's own demo-to-production migration pattern.
 
+## License
+
+MIT. See `LICENSE` for the full text.
+
 ---
 
 See `ARCHITECTURE.md` for how the system is put together, `SECURITY.md` for how credentials and data are handled, `PRIVACY.md` for what member data is collected and why, and `revision.md` for the full record of what was found and fixed while building this.
